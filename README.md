@@ -1,2 +1,2 @@
-# UI and Idae
+# UI and Idea
 https://www.youtube.com/watch?v=61v23Ce5SXA&t=362s
