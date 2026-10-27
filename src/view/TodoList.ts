@@ -1,10 +1,10 @@
-import type List from "../Model/repo/List";
+import type TodoRepo from "../Model/repo/TodoRepo";
 import type { ITodo } from "../Model/Todo";
 
 interface TodoListView {
   UL: HTMLUListElement;
   clear: () => void;
-  render(list: List<ITodo>): void;
+  render(repository: TodoRepo): void;
 }
 
 export default class TodoList implements TodoListView {
@@ -22,10 +22,12 @@ export default class TodoList implements TodoListView {
     this._UL.innerHTML = "";
   };
 
-  render(list: List<ITodo>): void {
+  render(repository: TodoRepo): void {
     const items = document.createDocumentFragment();
-    list.forEach((todo: ITodo) => {
+
+    repository.list.forEach((todo: ITodo) => {
       const item = document.createElement("li");
+
       item.className = "item";
 
       const checkbox = document.createElement("input");
@@ -33,11 +35,11 @@ export default class TodoList implements TodoListView {
       checkbox.checked = todo.checked;
       checkbox.id = todo.id;
       checkbox.addEventListener("change", () => {
-        const currentTodo = list.getById(todo.id);
-        if (!currentTodo) throw new Error("Todo does not exist");
+        // const currentTodo = list.getById(todo.id);
+        // if (!currentTodo) throw new Error("Todo does not exist");
 
-        currentTodo.checked = checkbox.checked;
-        list.save();
+        todo.checked = checkbox.checked;
+        repository.save();
       });
 
       const label = document.createElement("label");
@@ -49,11 +51,11 @@ export default class TodoList implements TodoListView {
       deleteButton.type = "button";
       deleteButton.textContent = "X";
       deleteButton.addEventListener("click", () => {
-        const currentTodo = list.getById(todo.id);
-        if (!currentTodo) throw new Error("Todo does not exist");
+        // const currentTodo = list.getById(todo.id);
+        // if (!currentTodo) throw new Error("Todo does not exist");
 
-        list.remove(currentTodo);
-        this.render(list);
+        repository.remove(todo);
+        this.render(repository);
       });
 
       item.append(checkbox, label, deleteButton);
